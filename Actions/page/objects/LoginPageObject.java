@@ -1,7 +1,6 @@
 package page.objects;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import commons.AbstractPage;
 import page.ui.LoginPageUI;
 
@@ -19,10 +18,13 @@ public class LoginPageObject extends AbstractPage {
 	public String getLoginPageURL() {
 		return getCurrentUrl(driver);
 	}
-	
-	//click here link
+
 	public void clickHereLink() {
 		clickToElement(driver, LoginPageUI.HERE_LINK);
+	}
+	
+	public void clickHereLinkByJavaS() {
+		executeForWebElement(driver, LoginPageUI.HERE_LINK);
 	}
 	
 	public void inputUserIDTextbox(String userID) {
