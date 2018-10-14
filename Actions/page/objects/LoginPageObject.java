@@ -11,8 +11,9 @@ public class LoginPageObject extends AbstractPage {
 		driver = mappingDriver;
 	}
 
-	public void openURL(String url) {
+	public LoginPageObject openURL(String url) {
 		openAnyUrl(driver, url);
+		return PageManageDriver.getLoginPage(driver);
 	}
 	
 	public String getLoginPageURL() {
@@ -23,8 +24,9 @@ public class LoginPageObject extends AbstractPage {
 		clickToElement(driver, LoginPageUI.HERE_LINK);
 	}
 	
-	public void clickHereLinkByJavaS() {
+	public RegisterPageObject clickHereLinkByJavaS() {
 		executeForWebElement(driver, LoginPageUI.HERE_LINK);
+		return PageManageDriver.getRegisterPage(driver);
 	}
 	
 	public void inputUserIDTextbox(String userID) {
@@ -36,7 +38,8 @@ public class LoginPageObject extends AbstractPage {
 		sendKeyToElement(driver, LoginPageUI.PASSWORD_TEXTBOX, password);
 	}
 	
-	public void clickLoginButton() {
+	public HomePageObject clickLoginButton() {
 		clickToElement(driver, LoginPageUI.LOGIN_BUTTON);
+		return PageManageDriver.getHomePage(driver);
 	}
 }
