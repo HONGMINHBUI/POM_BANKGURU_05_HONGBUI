@@ -3,53 +3,37 @@ package page.objects;
 import org.openqa.selenium.WebDriver;
 
 public class PageManageDriver {
-	private static LoginPageObject loginPage;
-	private static RegisterPageObject registerPage;
-	private static HomePageObject homePage;
-	private static NewCustomerPageObject newCustomerPage;
-	private static EditCustomerPageObject editCustomerPage;
-	private static DeleteCustomerPageObject deleteCustomerPage;
-	private static NewAccountPageObject newAccountPage;
-	
+
 	public static LoginPageObject getLoginPage(WebDriver driver) {
-		if (loginPage == null) {
-			loginPage = new LoginPageObject(driver);
-		} return loginPage;
+		return new LoginPageObject(driver);
 	}
 
 	public static RegisterPageObject getRegisterPage(WebDriver driver) {
-		if (registerPage == null) {
-			registerPage = new RegisterPageObject(driver);
-		} return registerPage;
+		return new RegisterPageObject(driver);
 	}
-	
+
 	public static HomePageObject getHomePage(WebDriver driver) {
-		if (homePage == null) {
-			homePage = new HomePageObject(driver);
-		} return homePage;
+		return new HomePageObject(driver);
 	}
-	
+
 	public static NewCustomerPageObject getNewCustomerPage(WebDriver driver) {
-		if (newCustomerPage == null) {
-			newCustomerPage = new NewCustomerPageObject(driver);
-		} return newCustomerPage;
+		return new NewCustomerPageObject(driver);
 	}
-	
+
 	public static EditCustomerPageObject getEditCustomerPage(WebDriver driver) {
-		if (editCustomerPage == null) {
-			editCustomerPage = new EditCustomerPageObject(driver);
-		} return editCustomerPage;
+		return new EditCustomerPageObject(driver);
 	}
-	
+
 	public static DeleteCustomerPageObject getDeleteCustomerPage(WebDriver driver) {
-		if (deleteCustomerPage == null) {
-			deleteCustomerPage = new DeleteCustomerPageObject(driver);
-		} return deleteCustomerPage;
+		return new DeleteCustomerPageObject(driver);
+	}
+
+	public static NewAccountPageObject getNewAccountPage(WebDriver driver) {
+		return new NewAccountPageObject(driver);
 	}
 	
-	public static NewAccountPageObject getNewAccountPage(WebDriver driver) {
-		if (newAccountPage == null) {
-			newAccountPage = new NewAccountPageObject(driver);
-		} return newAccountPage;
+	public static CustomerHomePageObject getCustomerHomePage(WebDriver driver) {
+		return new CustomerHomePageObject(driver);
 	}
+	
 }

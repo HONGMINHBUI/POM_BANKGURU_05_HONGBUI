@@ -2,6 +2,7 @@ package page.objects;
 
 import org.openqa.selenium.WebDriver;
 import commons.AbstractPage;
+import page.ui.AbstractPageUI;
 import page.ui.LoginPageUI;
 
 public class LoginPageObject extends AbstractPage {
@@ -20,8 +21,9 @@ public class LoginPageObject extends AbstractPage {
 		return getCurrentUrl(driver);
 	}
 
-	public void clickHereLink() {
-		clickToElement(driver, LoginPageUI.HERE_LINK);
+	public RegisterPageObject clickHereLink() {
+		clickToDynamicElement(driver, "here");
+		return PageManageDriver.getRegisterPage(driver);
 	}
 	
 	public RegisterPageObject clickHereLinkByJavaS() {
@@ -30,16 +32,22 @@ public class LoginPageObject extends AbstractPage {
 	}
 	
 	public void inputUserIDTextbox(String userID) {
-		waitForVisible(driver, LoginPageUI.USER_ID_TEXTBOX); 
-		sendKeyToElement(driver, LoginPageUI.USER_ID_TEXTBOX, userID );
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, userID); 
+		sendKeyToDynamicInputElement(driver, "uid", userID);
 	}
 	
 	public void inputPasswordTextbox(String password) {
-		sendKeyToElement(driver, LoginPageUI.PASSWORD_TEXTBOX, password);
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, password); 
+		sendKeyToDynamicInputElement(driver, "password", password);
 	}
 	
 	public HomePageObject clickLoginButton() {
-		clickToElement(driver, LoginPageUI.LOGIN_BUTTON);
+		clickToDynamicElement(driver, "btnLogin");
 		return PageManageDriver.getHomePage(driver);
+	}
+	
+	public CustomerHomePageObject clickLogin() {
+		clickToDynamicElement(driver, "btnLogin");
+		return PageManageDriver.getCustomerHomePage(driver);
 	}
 }

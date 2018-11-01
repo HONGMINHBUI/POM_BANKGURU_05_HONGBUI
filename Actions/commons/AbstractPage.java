@@ -1,7 +1,10 @@
 package commons;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,6 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import page.objects.DeleteCustomerPageObject;
 import page.objects.EditCustomerPageObject;
 import page.objects.HomePageObject;
+import page.objects.LoginPageObject;
 import page.objects.NewAccountPageObject;
 import page.objects.NewCustomerPageObject;
 import page.objects.PageManageDriver;
@@ -23,7 +27,8 @@ import page.ui.AbstractPageUI;
 
 public class AbstractPage {
 	
-	private int timeOut= 30;
+	private int longTimeOut = 30;
+	private long shortTimeOut = 5;
 
 	public void openAnyUrl(WebDriver driver, String url) {
 		driver.get(url);
@@ -58,6 +63,11 @@ public class AbstractPage {
 		element.click();
 	}
 	
+	public void clickToDynamicElement(WebDriver driver, String fieldName) {
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, fieldName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, fieldName);
+	}
+	
 	public void clickToElement(WebDriver driver, String locator, String... value) {
 		locator = String.format(locator, (Object[]) value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -74,7 +84,12 @@ public class AbstractPage {
 		locator = String.format(locator, (Object[]) value);
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.clear();
-		element.sendKeys(value);
+		element.sendKeys(inputValue);
+	}
+	
+	public void sendKeyToDynamicInputElement(WebDriver driver, String inputFieldName, String value) {
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, inputFieldName);
+		sendKeyToElement(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, value, inputFieldName);
 	}
 
 	public void selectItemInDropdown(WebDriver driver, String locator, String value) {
@@ -84,7 +99,7 @@ public class AbstractPage {
 	
 	public void selectItemInCustomDropdown(WebDriver driver, WebDriverWait wait, String dropdown, String listItems, String valueItem) throws Exception {
 		  WebElement dropdownElement = driver.findElement(By.xpath(dropdown));
-		  wait = new WebDriverWait(driver, timeOut);
+		  wait = new WebDriverWait(driver, longTimeOut);
 		  ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",dropdownElement);
 		  dropdownElement.click();
 		  List<WebElement> allItems = driver.findElements(By.xpath(listItems));
@@ -111,6 +126,12 @@ public class AbstractPage {
 	}
 
 	public String getTextElement(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		return element.getText();
+	}
+	
+	public String getTextElement(WebDriver driver, String locator, String... value) {
+		locator = String.format(locator, (Object[]) value);
 		WebElement element = driver.findElement(By.xpath(locator));
 		return element.getText();
 	}
@@ -324,52 +345,93 @@ public class AbstractPage {
 	}
 	
 	public void waitForPresence (WebDriver driver, String locator) {
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
 	}
 	
 	public void waitForPresence (WebDriver driver, String locator, String... value) {
 		locator = String.format(locator, (Object[]) value);
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
 	}
 	
 	public void waitForVisible (WebDriver driver, String locator) {
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
 	}
 	
 	public void waitForVisible (WebDriver driver, String locator, String... value) {
 		locator = String.format(locator, (Object[]) value);
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
 	}
 	
 	public void waitForInvisible (WebDriver driver, String locator) {
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(locator)));
 	}
 	
 	public void waitForInvisible (WebDriver driver, String locator, String... value) {
 		locator = String.format(locator, (Object[]) value);
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(locator)));
 	}
 	
 	public void waitForClickAble (WebDriver driver, String locator) {
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
 	}
 	
 	public void waitForClickAble (WebDriver driver, String locator, String... value) {
 		locator = String.format(locator, (Object[]) value);
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
 	}
 	
 	public void waitForAlertPresence (WebDriver driver) {
-		WebDriverWait wait = new WebDriverWait(driver, timeOut);
+		WebDriverWait wait = new WebDriverWait(driver, longTimeOut);
 		wait.until(ExpectedConditions.alertIsPresent());
+	}
+	
+	public boolean isControlUndisplayed(WebDriver driver, String locator) {
+    	Date date = new Date();
+		System.out.println("Started time = " + date.toString());
+		overrideGlobalTimeout(driver, shortTimeOut);
+		List<WebElement> elements = driver.findElements(By.xpath(locator));
+		if (elements.size() == 0) {
+			date = new Date();
+			System.out.println("End time = " + date.toString());
+			overrideGlobalTimeout(driver, longTimeOut);
+			return true;
+		} else {
+			date = new Date();
+			System.out.println("End time = " + date.toString());
+			overrideGlobalTimeout(driver, longTimeOut);
+			return false;
+		}
+	}
+
+	public boolean isControlUndisplayed(WebDriver driver, String locator, String... value) {
+		Date date = new Date();
+		System.out.println("Started time = " + date.toString());
+		overrideGlobalTimeout(driver, shortTimeOut);
+		locator = String.format(locator, (Object[]) value);
+		List<WebElement> elements = driver.findElements(By.xpath(locator));
+		if (elements.size() == 0) {
+			date = new Date();
+			System.out.println("End time = " + date.toString());
+			overrideGlobalTimeout(driver, longTimeOut);
+			return true;
+		} else {
+			date = new Date();
+			System.out.println("End time = " + date.toString());
+			overrideGlobalTimeout(driver, longTimeOut);
+			return false;
+		}
+	}
+
+	public void overrideGlobalTimeout(WebDriver driver, long timeOut) {
+		driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
 	}
 	
 	public void quitAllBroswer (WebDriver driver) {
@@ -405,4 +467,12 @@ public class AbstractPage {
 		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, "Delete Customer");
 		return PageManageDriver.getDeleteCustomerPage(driver);
 	}
+	
+	public LoginPageObject openLogOutPage(WebDriver driver) {
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_LINK, "Log out");
+		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, "Log out");
+		acceptAlert(driver);
+		return PageManageDriver.getLoginPage(driver);
+	}
+	
 }

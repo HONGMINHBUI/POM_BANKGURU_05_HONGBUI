@@ -3,6 +3,7 @@ package page.objects;
 import org.openqa.selenium.WebDriver;
 
 import commons.AbstractPage;
+import page.ui.AbstractPageUI;
 import page.ui.RegisterPageUI;
 
 public class RegisterPageObject extends AbstractPage{
@@ -13,12 +14,12 @@ public class RegisterPageObject extends AbstractPage{
 	}
 	//input email address
 	public void inputEmailAddress(String emailAddress) {
-		waitForVisible(driver, RegisterPageUI.EMAIL_ADDRESS);
-		sendKeyToElement(driver, RegisterPageUI.EMAIL_ADDRESS, emailAddress);
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, emailAddress);
+		sendKeyToDynamicInputElement(driver, "emailid", emailAddress);
 	}
 	//click Submit button
 	public void clickSubmitButton() {
-		clickToElement(driver, RegisterPageUI.SUBMIT_BUTTON);
+		clickToDynamicElement(driver, "btnLogin");
 	}
 	//get UserID text
 	public String getUserIdText() {
