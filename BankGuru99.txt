@@ -1,0 +1,2 @@
+2018-11-13 22:31:30,114 INFO  com.bankguru.payment.payment_CreatAndEditCustomer_PaymentTransaction - TC01_RegisterAndLogIn - Step01: Login
+2018-11-13 22:31:36,507 INFO  com.bankguru.payment.payment_CreatAndEditCustomer_PaymentTransaction - TC02_CreatANewCustomer_DynamicElement - Step01: Create a New Customer

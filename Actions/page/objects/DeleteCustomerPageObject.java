@@ -11,4 +11,7 @@ public class DeleteCustomerPageObject extends AbstractPage {
 		driver = mapdriver;
 	}
 
+	public String isDeleteCustomerSuccessfully() {
+		return getTextAlert(driver);
+	}
 }

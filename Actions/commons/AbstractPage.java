@@ -68,6 +68,12 @@ public class AbstractPage {
 		clickToElement(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, fieldName);
 	}
 	
+	public void clickToDynamicElementWithAlert(WebDriver driver, String fieldName) {
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, fieldName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_INPUT_FIELD, fieldName);
+		acceptAlert(driver);
+	}
+	
 	public void clickToElement(WebDriver driver, String locator, String... value) {
 		locator = String.format(locator, (Object[]) value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -444,6 +450,11 @@ public class AbstractPage {
 		return PageManageDriver.getHomePage(driver);
 	}
 	
+	public HomePageObject acceptDeleteAlert(WebDriver driver) {
+		acceptAlert(driver);
+		return PageManageDriver.getHomePage(driver);
+	}
+	
 	public NewCustomerPageObject openNewCustomerPage(WebDriver driver) {
 		waitForVisible(driver, AbstractPageUI.DYNAMIC_LINK, "New Customer");
 		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, "New Customer");
@@ -473,6 +484,41 @@ public class AbstractPage {
 		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, "Log out");
 		acceptAlert(driver);
 		return PageManageDriver.getLoginPage(driver);
+	}
+	
+	public AbstractPage openDynamicPage(WebDriver driver, String pageName) {
+		waitForVisible(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK, pageName);
+		switch (pageName) {
+		case "New Customer":
+			return PageManageDriver.getNewCustomerPage(driver);
+		case "Edit Customer":
+			return PageManageDriver.getEditCustomerPage(driver);
+		case "New Account":
+			return PageManageDriver.getNewAccountPage(driver);
+		case "Delete Customer":
+			return PageManageDriver.getDeleteCustomerPage(driver);
+		case "Delete Account":
+			return PageManageDriver.getDeleteAccountPage(driver);	
+		case "Deposit":
+			return PageManageDriver.getDepositPage(driver);
+		case "Withdrawal":
+			return PageManageDriver.getWithdrawalPage(driver);
+		case "Balance Enquiry":
+			return PageManageDriver.getBalanceEnquiryPage(driver);
+		case "Fund Transfer":
+			return PageManageDriver.getFundTransferPage(driver);
+		case "Log out":
+			acceptAlert(driver);
+			return PageManageDriver.getLoginPage(driver);
+		default:
+			return PageManageDriver.getHomePage(driver);	
+		}
+	}
+	
+	public String getTextCurrentBalance(WebDriver driver) {
+		waitForVisible(driver, AbstractPageUI.CURRENT_BALANCE);
+		return getTextElement(driver, AbstractPageUI.CURRENT_BALANCE);
 	}
 	
 }
