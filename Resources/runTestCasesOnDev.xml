@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="BANK GURU" parallel="false">
 	<parameter name="url" value="http://demo.guru99.com/v4" />
+	
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="commons.ExtentReportListener" />
+	</listeners>
+
+<!-- 	<test name="Run on Chrome">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.bankguru.user.user_01_RegisterAndLogin_V5" />
+		</classes>
+	</test> -->
 
 	<test name="Run on Firefox">
 		<parameter name="browser" value="firefox" />
 		<classes>
-			<class name="com.bankguru.user.user_01_RegisterAndLogin_V4" />
+			<class name="com.bankguru.payment.payment_CreatAndEditCustomer_PaymentTransaction" />
 		</classes>
 	</test>
+
+<!-- 	<test name="Run on HeadLess">
+		<parameter name="browser" value="headless" />
+		<classes>
+			<class name="com.bankguru.user.user_01_RegisterAndLogin_V3" />
+		</classes>
+	</test> -->
 
 </suite> <!-- Suite -->

@@ -14,8 +14,4 @@ public class DeleteAccountPageObject extends AbstractPage {
 	public String isDeleteAccountSuccessfully() {
 		return getTextAlert(driver);
 	}
-	
-	public void acceptDeleteAlert() {
-		acceptAlert(driver);
-	}
 }
